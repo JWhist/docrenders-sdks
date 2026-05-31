@@ -1,0 +1,25 @@
+{
+  "name": "pdfgen-sdk",
+  "version": "0.1.0",
+  "description": "Official JavaScript/TypeScript SDK for the PDFGen API",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc",
+    "test": "jest"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node"
+  },
+  "keywords": ["pdf", "markdown", "pdfgen", "sdk"],
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^29.0.0",
+    "jest": "^29.0.0",
+    "ts-jest": "^29.0.0",
+    "typescript": "^5.0.0"
+  }
+}
