@@ -1,4 +1,4 @@
-package pdfgen_test
+package docrenders_test
 
 import (
 	"context"
@@ -7,14 +7,14 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	pdfgen "github.com/JWhist/pdfgen-sdks/go"
+	pdfgen "github.com/JWhist/docrenders-sdks/go"
 )
 
 func newTestServer(t *testing.T, handler http.HandlerFunc) (*httptest.Server, *pdfgen.Client) {
 	t.Helper()
 	srv := httptest.NewServer(handler)
 	t.Cleanup(srv.Close)
-	client := pdfgen.NewClient("pdg_test_key", pdfgen.WithBaseURL(srv.URL))
+	client := pdfgen.NewClient("dcr_test_key", pdfgen.WithBaseURL(srv.URL))
 	return srv, client
 }
 
@@ -24,7 +24,7 @@ func TestRender_Binary(t *testing.T) {
 		if r.URL.Path != "/render" || r.Method != http.MethodPost {
 			t.Errorf("unexpected request: %s %s", r.Method, r.URL.Path)
 		}
-		if r.Header.Get("Authorization") != "Bearer pdg_test_key" {
+		if r.Header.Get("Authorization") != "Bearer dcr_test_key" {
 			t.Errorf("missing or wrong auth header")
 		}
 		var body map[string]interface{}
@@ -175,7 +175,7 @@ func TestAPIError(t *testing.T) {
 	if err == nil {
 		t.Fatal("expected error, got nil")
 	}
-	if want := "pdfgen: quota_exceeded: monthly render limit of 100 reached"; err.Error() != want {
+	if want := "docrenders: quota_exceeded: monthly render limit of 100 reached"; err.Error() != want {
 		t.Errorf("error message: got %q, want %q", err.Error(), want)
 	}
 }

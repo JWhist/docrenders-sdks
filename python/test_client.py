@@ -1,11 +1,11 @@
-"""Tests for the PDFGen Python SDK using a mock HTTP server."""
+"""Tests for the DocRenders Python SDK using a mock HTTP server."""
 
 import json
 import threading
 import unittest
 from http.server import BaseHTTPRequestHandler, HTTPServer
 
-from pdfgen import PDFGenClient, PDFGenError, RenderOptions, RenderRequest, RenderFileRequest
+from docrenders import DocRendersClient, DocRendersError, RenderOptions, RenderRequest, RenderFileRequest
 
 
 def start_mock_server(handler_class):
@@ -23,7 +23,7 @@ class TestRenderBinary(unittest.TestCase):
                 length = int(self.headers.get("Content-Length", 0))
                 body = json.loads(self.rfile.read(length))
                 assert body["output"] == "binary"
-                assert self.headers.get("Authorization") == "Bearer pdg_test_key"
+                assert self.headers.get("Authorization") == "Bearer dcr_test_key"
                 resp = b"%PDF-1.4 fake"
                 self.send_response(200)
                 self.send_header("Content-Type", "application/pdf")
@@ -34,7 +34,7 @@ class TestRenderBinary(unittest.TestCase):
             def log_message(self, *args): pass
 
         server = start_mock_server(Handler)
-        client = PDFGenClient("pdg_test_key", base_url=f"http://127.0.0.1:{server.server_address[1]}")
+        client = DocRendersClient("dcr_test_key", base_url=f"http://127.0.0.1:{server.server_address[1]}")
         result = client.render(RenderRequest(markdown="# Hello"))
         self.assertEqual(result, b"%PDF-1.4 fake")
         server.shutdown()
@@ -61,7 +61,7 @@ class TestRenderSignedURL(unittest.TestCase):
             def log_message(self, *args): pass
 
         server = start_mock_server(Handler)
-        client = PDFGenClient("pdg_test_key", base_url=f"http://127.0.0.1:{server.server_address[1]}")
+        client = DocRendersClient("dcr_test_key", base_url=f"http://127.0.0.1:{server.server_address[1]}")
         result = client.render_signed_url(RenderRequest(markdown="# Hello"))
         self.assertEqual(result.url, "https://storage.example.com/abc.pdf")
         self.assertEqual(result.render_time_ms, 1200)
@@ -88,7 +88,7 @@ class TestRenderFile(unittest.TestCase):
             def log_message(self, *args): pass
 
         server = start_mock_server(Handler)
-        client = PDFGenClient("pdg_test_key", base_url=f"http://127.0.0.1:{server.server_address[1]}")
+        client = DocRendersClient("dcr_test_key", base_url=f"http://127.0.0.1:{server.server_address[1]}")
         result = client.render_file(RenderFileRequest(filename="invoice.md", content=b"# Invoice"))
         self.assertEqual(result, b"%PDF-1.4 fake")
         server.shutdown()
@@ -116,7 +116,7 @@ class TestUsage(unittest.TestCase):
             def log_message(self, *args): pass
 
         server = start_mock_server(Handler)
-        client = PDFGenClient("pdg_test_key", base_url=f"http://127.0.0.1:{server.server_address[1]}")
+        client = DocRendersClient("dcr_test_key", base_url=f"http://127.0.0.1:{server.server_address[1]}")
         usage = client.usage()
         self.assertEqual(usage.plan, "starter")
         self.assertEqual(usage.renders_used, 42)
@@ -140,8 +140,8 @@ class TestAPIError(unittest.TestCase):
             def log_message(self, *args): pass
 
         server = start_mock_server(Handler)
-        client = PDFGenClient("pdg_test_key", base_url=f"http://127.0.0.1:{server.server_address[1]}")
-        with self.assertRaises(PDFGenError) as cm:
+        client = DocRendersClient("dcr_test_key", base_url=f"http://127.0.0.1:{server.server_address[1]}")
+        with self.assertRaises(DocRendersError) as cm:
             client.render(RenderRequest(markdown="# Hello"))
         self.assertEqual(cm.exception.code, "quota_exceeded")
         server.shutdown()

@@ -1,4 +1,4 @@
-const DEFAULT_BASE_URL = "https://pdfgen-api.netlify.app";
+const DEFAULT_BASE_URL = "https://docrenders.com";
 
 export interface RenderOptions {
   format?: "A4" | "Letter" | "Legal";
@@ -41,14 +41,14 @@ export interface ClientOptions {
   baseURL?: string;
 }
 
-export class PDFGenError extends Error {
+export class DocRendersError extends Error {
   constructor(public code: string, message: string) {
     super(message);
-    this.name = "PDFGenError";
+    this.name = "DocRendersError";
   }
 }
 
-export class PDFGenClient {
+export class DocRendersClient {
   private apiKey: string;
   private baseURL: string;
 
@@ -65,7 +65,7 @@ export class PDFGenClient {
     const body = await res.json().catch(() => ({}));
     const code = body?.error?.code ?? "unknown_error";
     const message = body?.error?.message ?? `Unexpected status ${res.status}`;
-    throw new PDFGenError(code, message);
+    throw new DocRendersError(code, message);
   }
 
   /** Render Markdown or HTML to PDF. Returns raw PDF bytes. */
@@ -136,4 +136,4 @@ function buildFormData(req: RenderFileRequest, output: string): FormData {
   return fd;
 }
 
-export default PDFGenClient;
+export default DocRendersClient;

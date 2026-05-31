@@ -1,19 +1,19 @@
-# pdfgen-sdk (JavaScript / TypeScript)
+# docrenders-sdk (JavaScript / TypeScript)
 
-Official JS/TS SDK for the [PDFGen API](https://pdfgen-api.netlify.app).
+Official JS/TS SDK for the [DocRenders API](https://docrenders.com).
 
 ## Installation
 
 ```bash
-npm install pdfgen-sdk
+npm install docrenders-sdk
 ```
 
 ## Usage
 
 ```ts
-import PDFGenClient from "pdfgen-sdk";
+import DocRendersClient from "docrenders-sdk";
 
-const client = new PDFGenClient(process.env.PDFGEN_API_KEY!);
+const client = new DocRendersClient(process.env.PDFGEN_API_KEY!);
 
 // Render to raw bytes
 const pdf = await client.render({
@@ -43,12 +43,12 @@ console.log(`${usage.renders_used} / ${usage.renders_limit} renders used`);
 ## Error handling
 
 ```ts
-import { PDFGenError } from "pdfgen-sdk";
+import { DocRendersError } from "docrenders-sdk";
 
 try {
   const pdf = await client.render({ markdown: "# Hello" });
 } catch (err) {
-  if (err instanceof PDFGenError) {
+  if (err instanceof DocRendersError) {
     console.error(err.code, err.message); // e.g. "quota_exceeded"
   }
 }

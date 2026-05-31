@@ -1,9 +1,9 @@
 /**
- * Tests for the PDFGen JS SDK.
+ * Tests for the DocRenders JS SDK.
  * Uses a mock fetch to avoid real network calls.
  */
 
-import PDFGenClient, { PDFGenError } from "./index";
+import DocRendersClient, { DocRendersError } from "./index";
 
 function mockFetch(responses: Array<{ status: number; body: unknown; contentType?: string }>) {
   let call = 0;
@@ -24,9 +24,9 @@ function mockFetch(responses: Array<{ status: number; body: unknown; contentType
 
 const PDF_BYTES = new Uint8Array([0x25, 0x50, 0x44, 0x46]); // %PDF
 
-describe("PDFGenClient", () => {
+describe("DocRendersClient", () => {
   test("render() sends output=binary and returns bytes", async () => {
-    const client = new PDFGenClient("pdg_test_key");
+    const client = new DocRendersClient("dcr_test_key");
     (global as any).fetch = mockFetch([
       { status: 200, body: PDF_BYTES, contentType: "application/pdf" },
     ]);
@@ -37,7 +37,7 @@ describe("PDFGenClient", () => {
   });
 
   test("renderSignedURL() sends output=url and returns url/expires_at", async () => {
-    const client = new PDFGenClient("pdg_test_key");
+    const client = new DocRendersClient("dcr_test_key");
     (global as any).fetch = mockFetch([
       {
         status: 200,
@@ -55,7 +55,7 @@ describe("PDFGenClient", () => {
   });
 
   test("renderFile() sends multipart with output=binary", async () => {
-    const client = new PDFGenClient("pdg_test_key");
+    const client = new DocRendersClient("dcr_test_key");
     (global as any).fetch = mockFetch([
       { status: 200, body: PDF_BYTES, contentType: "application/pdf" },
     ]);
@@ -68,7 +68,7 @@ describe("PDFGenClient", () => {
   });
 
   test("renderFileSignedURL() returns signed URL", async () => {
-    const client = new PDFGenClient("pdg_test_key");
+    const client = new DocRendersClient("dcr_test_key");
     (global as any).fetch = mockFetch([
       {
         status: 200,
@@ -88,7 +88,7 @@ describe("PDFGenClient", () => {
   });
 
   test("usage() returns usage data", async () => {
-    const client = new PDFGenClient("pdg_test_key");
+    const client = new DocRendersClient("dcr_test_key");
     (global as any).fetch = mockFetch([
       {
         status: 200,
@@ -108,8 +108,8 @@ describe("PDFGenClient", () => {
     expect(result.renders_used).toBe(42);
   });
 
-  test("throws PDFGenError on API error", async () => {
-    const client = new PDFGenClient("pdg_test_key");
+  test("throws DocRendersError on API error", async () => {
+    const client = new DocRendersClient("dcr_test_key");
     (global as any).fetch = mockFetch([
       {
         status: 429,
@@ -123,9 +123,9 @@ describe("PDFGenClient", () => {
     } catch (err) {
       caught = err;
     }
-    expect(caught).toBeInstanceOf(PDFGenError);
-    expect((caught as PDFGenError).code).toBe("quota_exceeded");
-    expect((caught as PDFGenError).message).toBe("monthly render limit reached");
+    expect(caught).toBeInstanceOf(DocRendersError);
+    expect((caught as DocRendersError).code).toBe("quota_exceeded");
+    expect((caught as DocRendersError).message).toBe("monthly render limit reached");
   });
 
   test("sets Authorization header on every request", async () => {
@@ -138,8 +138,8 @@ describe("PDFGenClient", () => {
       });
     };
 
-    const client = new PDFGenClient("pdg_test_key");
+    const client = new DocRendersClient("dcr_test_key");
     await client.render({ markdown: "# Hello" });
-    expect(capturedHeaders?.get("Authorization")).toBe("Bearer pdg_test_key");
+    expect(capturedHeaders?.get("Authorization")).toBe("Bearer dcr_test_key");
   });
 });

@@ -1,11 +1,11 @@
-// Package pdfgen is the official Go SDK for the PDFGen API.
+// Package pdfgen is the official Go SDK for the DocRenders API.
 // It provides methods to render Markdown or HTML to PDF and retrieve usage information.
 //
 // Usage:
 //
-//	client := pdfgen.NewClient("pdg_live_YOUR_API_KEY")
-//	pdf, err := client.Render(ctx, pdfgen.RenderRequest{Markdown: "# Hello"})
-package pdfgen
+//	client := docrenders.NewClient("dcr_live_YOUR_API_KEY")
+//	pdf, err := client.Render(ctx, docrenders.RenderRequest{Markdown: "# Hello"})
+package docrenders
 
 import (
 	"bytes"
@@ -19,16 +19,16 @@ import (
 	"time"
 )
 
-const defaultBaseURL = "https://pdfgen-api.netlify.app"
+const defaultBaseURL = "https://docrenders.com"
 
-// Client is the PDFGen API client.
+// Client is the DocRenders API client.
 type Client struct {
 	apiKey     string
 	baseURL    string
 	httpClient *http.Client
 }
 
-// NewClient creates a new PDFGen client with the given API key.
+// NewClient creates a new DocRenders client with the given API key.
 func NewClient(apiKey string, opts ...Option) *Client {
 	c := &Client{
 		apiKey:  apiKey,
@@ -117,9 +117,9 @@ func (c *Client) do(req *http.Request) (*http.Response, error) {
 		defer resp.Body.Close()
 		var apiErr apiError
 		if err := json.NewDecoder(resp.Body).Decode(&apiErr); err == nil && apiErr.Error.Code != "" {
-			return nil, fmt.Errorf("pdfgen: %s: %s", apiErr.Error.Code, apiErr.Error.Message)
+			return nil, fmt.Errorf("docrenders: %s: %s", apiErr.Error.Code, apiErr.Error.Message)
 		}
-		return nil, fmt.Errorf("pdfgen: unexpected status %d", resp.StatusCode)
+		return nil, fmt.Errorf("docrenders: unexpected status %d", resp.StatusCode)
 	}
 	return resp, nil
 }

@@ -1,20 +1,20 @@
-# pdfgen-sdk (Python)
+# docrenders-sdk (Python)
 
-Official Python SDK for the [PDFGen API](https://pdfgen-api.netlify.app). No dependencies — uses the standard library only.
+Official Python SDK for the [DocRenders API](https://docrenders.com). No dependencies — uses the standard library only.
 
 ## Installation
 
 ```bash
-pip install pdfgen-sdk
+pip install docrenders-sdk
 ```
 
 ## Usage
 
 ```python
 import os
-from pdfgen import PDFGenClient, RenderRequest, RenderFileRequest, RenderOptions
+from docrenders import DocRendersClient, RenderRequest, RenderFileRequest, RenderOptions
 
-client = PDFGenClient(os.environ["PDFGEN_API_KEY"])
+client = DocRendersClient(os.environ["PDFGEN_API_KEY"])
 
 # Render to raw bytes
 pdf = client.render(RenderRequest(
@@ -42,10 +42,10 @@ print(f"{usage.renders_used} / {usage.renders_limit} renders used")
 ## Error handling
 
 ```python
-from pdfgen import PDFGenClient, PDFGenError, RenderRequest
+from docrenders import DocRendersClient, DocRendersError, RenderRequest
 
 try:
     pdf = client.render(RenderRequest(markdown="# Hello"))
-except PDFGenError as e:
+except DocRendersError as e:
     print(e.code, str(e))  # e.g. "quota_exceeded"
 ```

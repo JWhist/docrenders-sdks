@@ -1,22 +1,22 @@
-# PDFGen SDKs
+# DocRenders SDKs
 
-Official client libraries for the PDFGen API — convert Markdown or HTML to production-ready PDFs with a single API call.
+Official client libraries for the DocRenders API — convert Markdown or HTML to production-ready PDFs with a single API call.
 
 | SDK | Directory | Package |
 |-----|-----------|---------|
-| Go | [`/go`](./go) | `github.com/JWhist/pdfgen-sdks/go` |
-| JavaScript / TypeScript | [`/js`](./js) | `pdfgen-sdk` (npm) |
-| Python | [`/python`](./python) | `pdfgen-sdk` (PyPI) |
+| Go | [`/go`](./go) | `github.com/JWhist/docrenders-sdks/go` |
+| JavaScript / TypeScript | [`/js`](./js) | `docrenders-sdk` (npm) |
+| Python | [`/python`](./python) | `docrenders-sdk` (PyPI) |
 
 ## Quick start
 
 ### Go
 
 ```go
-import pdfgen "github.com/JWhist/pdfgen-sdks/go"
+import docrenders "github.com/JWhist/docrenders-sdks/go"
 
-client := pdfgen.NewClient("pdg_live_YOUR_API_KEY")
-pdf, err := client.Render(ctx, pdfgen.RenderRequest{
+client := docrenders.NewClient("dcr_live_YOUR_API_KEY")
+pdf, err := client.Render(ctx, docrenders.RenderRequest{
     Markdown: "# Invoice\n\nDue: **$1,200**",
 })
 ```
@@ -24,21 +24,21 @@ pdf, err := client.Render(ctx, pdfgen.RenderRequest{
 ### JavaScript / TypeScript
 
 ```ts
-import PDFGenClient from "pdfgen-sdk";
+import DocRendersClient from "docrenders-sdk";
 
-const client = new PDFGenClient("pdg_live_YOUR_API_KEY");
+const client = new DocRendersClient("dcr_live_YOUR_API_KEY");
 const pdf = await client.render({ markdown: "# Invoice\n\nDue: **$1,200**" });
 ```
 
 ### Python
 
 ```python
-from pdfgen import PDFGenClient, RenderRequest
+from docrenders import DocRendersClient, RenderRequest
 
-client = PDFGenClient("pdg_live_YOUR_API_KEY")
+client = DocRendersClient("dcr_live_YOUR_API_KEY")
 pdf = client.render(RenderRequest(markdown="# Invoice\n\nDue: **$1,200**"))
 ```
 
 ## API reference
 
-See the [PDFGen API docs](https://pdfgen-api.netlify.app/docs.html) for the full reference.
+See the [DocRenders API docs](https://docrenders.com/docs.html) for the full reference.
