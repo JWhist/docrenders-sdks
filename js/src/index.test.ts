@@ -93,19 +93,17 @@ describe("DocRendersClient", () => {
       {
         status: 200,
         body: {
+          key_prefix: "dcr_live_abcd1234",
           plan: "starter",
-          period_start: "2026-05-01T00:00:00Z",
-          period_end: "2026-06-01T00:00:00Z",
-          renders_used: 42,
-          renders_limit: 5000,
-          renders_remaining: 4958,
+          rate_limit: { requests_per_minute: 60 },
+          renders: { used: 42, limit: 5000, period: "2026-06" },
         },
       },
     ]);
 
     const result = await client.usage();
     expect(result.plan).toBe("starter");
-    expect(result.renders_used).toBe(42);
+    expect(result.renders.used).toBe(42);
   });
 
   test("throws DocRendersError on API error", async () => {

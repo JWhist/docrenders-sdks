@@ -138,12 +138,10 @@ func TestUsage(t *testing.T) {
 		}
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(map[string]interface{}{
-			"plan":              "starter",
-			"period_start":      "2026-05-01T00:00:00Z",
-			"period_end":        "2026-06-01T00:00:00Z",
-			"renders_used":      42,
-			"renders_limit":     5000,
-			"renders_remaining": 4958,
+			"key_prefix": "dcr_live_abcd1234",
+			"plan":       "starter",
+			"rate_limit": map[string]interface{}{"requests_per_minute": 60},
+			"renders":    map[string]interface{}{"used": 42, "limit": 5000, "period": "2026-06"},
 		})
 	})
 
@@ -154,8 +152,8 @@ func TestUsage(t *testing.T) {
 	if usage.Plan != "starter" {
 		t.Errorf("plan: got %q, want %q", usage.Plan, "starter")
 	}
-	if usage.RendersUsed != 42 {
-		t.Errorf("renders_used: got %d, want 42", usage.RendersUsed)
+	if usage.Renders.Used != 42 {
+		t.Errorf("renders.used: got %d, want 42", usage.Renders.Used)
 	}
 }
 
