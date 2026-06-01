@@ -13,3 +13,6 @@ keywords = ["pdf", "markdown", "docrenders", "sdk"]
 
 [project.urls]
 Repository = "https://github.com/JWhist/docrenders-sdks"
+
+[tool.hatch.build.targets.wheel]
+packages = ["docrenders"]
