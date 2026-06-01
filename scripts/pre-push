@@ -1,0 +1,15 @@
+#!/bin/sh
+# Prevent direct pushes to main. Use a branch and open a PR instead.
+
+while read local_ref local_sha remote_ref remote_sha; do
+  if echo "$remote_ref" | grep -q "refs/heads/main"; then
+    echo ""
+    echo "Direct pushes to main are not allowed."
+    echo "Create a branch and open a pull request instead."
+    echo ""
+    echo "If you are certain, use: git push --no-verify"
+    exit 1
+  fi
+done
+
+exit 0
