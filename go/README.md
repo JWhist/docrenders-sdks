@@ -1,6 +1,6 @@
 # pdfgen-go
 
-Official Go SDK for the [DocRenders API](https://docrenders.com).
+Official Go SDK for the [DocRenders API](https://www.docrenders.com).
 
 ## Installation
 

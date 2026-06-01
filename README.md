@@ -41,4 +41,4 @@ pdf = client.render(RenderRequest(markdown="# Invoice\n\nDue: **$1,200**"))
 
 ## API reference
 
-See the [DocRenders API docs](https://docrenders.com/docs.html) for the full reference.
+See the [DocRenders API docs](https://www.docrenders.com/docs.html) for the full reference.

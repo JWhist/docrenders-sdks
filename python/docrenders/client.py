@@ -8,7 +8,7 @@ import urllib.request
 import urllib.error
 import json
 
-DEFAULT_BASE_URL = "https://docrenders.com"
+DEFAULT_BASE_URL = "https://www.docrenders.com"
 
 
 class DocRendersError(Exception):
