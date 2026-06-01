@@ -19,7 +19,7 @@ import (
 	"time"
 )
 
-const defaultBaseURL = "https://docrenders.com"
+const defaultBaseURL = "https://www.docrenders.com"
 
 // Client is the DocRenders API client.
 type Client struct {

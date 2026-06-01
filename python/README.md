@@ -1,6 +1,6 @@
 # docrenders-sdk (Python)
 
-Official Python SDK for the [DocRenders API](https://docrenders.com). No dependencies — uses the standard library only.
+Official Python SDK for the [DocRenders API](https://www.docrenders.com). No dependencies — uses the standard library only.
 
 ## Installation
 

@@ -1,4 +1,4 @@
-const DEFAULT_BASE_URL = "https://docrenders.com";
+const DEFAULT_BASE_URL = "https://www.docrenders.com";
 
 export interface RenderOptions {
   format?: "A4" | "Letter" | "Legal";

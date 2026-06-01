@@ -1,6 +1,6 @@
 # docrenders-sdk (JavaScript / TypeScript)
 
-Official JS/TS SDK for the [DocRenders API](https://docrenders.com).
+Official JS/TS SDK for the [DocRenders API](https://www.docrenders.com).
 
 ## Installation
 
