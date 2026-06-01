@@ -92,12 +92,22 @@ type SignedURLResult struct {
 
 // UsageResult is returned by Usage.
 type UsageResult struct {
-	Plan              string    `json:"plan"`
-	PeriodStart       time.Time `json:"period_start"`
-	PeriodEnd         time.Time `json:"period_end"`
-	RendersUsed       int       `json:"renders_used"`
-	RendersLimit      int       `json:"renders_limit"`
-	RendersRemaining  int       `json:"renders_remaining"`
+	KeyPrefix string      `json:"key_prefix"`
+	Plan      string      `json:"plan"`
+	RateLimit RateLimit   `json:"rate_limit"`
+	Renders   RenderUsage `json:"renders"`
+}
+
+// RateLimit contains the requests-per-minute limit for the plan.
+type RateLimit struct {
+	RequestsPerMinute int `json:"requests_per_minute"`
+}
+
+// RenderUsage contains render counts for the current billing period.
+type RenderUsage struct {
+	Used   int    `json:"used"`
+	Limit  int    `json:"limit"`
+	Period string `json:"period"`
 }
 
 type apiError struct {

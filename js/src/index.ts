@@ -29,12 +29,10 @@ export interface SignedURLResult {
 }
 
 export interface UsageResult {
+  key_prefix: string;
   plan: string;
-  period_start: string;
-  period_end: string;
-  renders_used: number;
-  renders_limit: number;
-  renders_remaining: number;
+  rate_limit: { requests_per_minute: number };
+  renders: { used: number; limit: number; period: string };
 }
 
 export interface ClientOptions {

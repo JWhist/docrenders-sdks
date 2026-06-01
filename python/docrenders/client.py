@@ -66,13 +66,23 @@ class SignedURLResult:
 
 
 @dataclass
+class RateLimit:
+    requests_per_minute: int
+
+
+@dataclass
+class RenderUsage:
+    used: int
+    limit: int
+    period: str
+
+
+@dataclass
 class UsageResult:
+    key_prefix: str
     plan: str
-    period_start: str
-    period_end: str
-    renders_used: int
-    renders_limit: int
-    renders_remaining: int
+    rate_limit: RateLimit
+    renders: RenderUsage
 
 
 class DocRendersClient:
@@ -185,13 +195,13 @@ class DocRendersClient:
         try:
             with urllib.request.urlopen(http_req) as resp:
                 body = json.loads(resp.read())
+                r = body["renders"]
+                rl = body["rate_limit"]
                 return UsageResult(
+                    key_prefix=body["key_prefix"],
                     plan=body["plan"],
-                    period_start=body["period_start"],
-                    period_end=body["period_end"],
-                    renders_used=body["renders_used"],
-                    renders_limit=body["renders_limit"],
-                    renders_remaining=body["renders_remaining"],
+                    rate_limit=RateLimit(requests_per_minute=rl["requests_per_minute"]),
+                    renders=RenderUsage(used=r["used"], limit=r["limit"], period=r["period"]),
                 )
         except urllib.error.HTTPError as e:
             self._raise_for_response(e)

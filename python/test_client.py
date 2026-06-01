@@ -100,12 +100,10 @@ class TestUsage(unittest.TestCase):
             def do_GET(self):
                 assert self.path == "/usage"
                 resp = json.dumps({
+                    "key_prefix": "dcr_live_abcd1234",
                     "plan": "starter",
-                    "period_start": "2026-05-01T00:00:00Z",
-                    "period_end": "2026-06-01T00:00:00Z",
-                    "renders_used": 42,
-                    "renders_limit": 5000,
-                    "renders_remaining": 4958,
+                    "rate_limit": {"requests_per_minute": 60},
+                    "renders": {"used": 42, "limit": 5000, "period": "2026-06"},
                 }).encode()
                 self.send_response(200)
                 self.send_header("Content-Type", "application/json")
@@ -119,8 +117,8 @@ class TestUsage(unittest.TestCase):
         client = DocRendersClient("dcr_test_key", base_url=f"http://127.0.0.1:{server.server_address[1]}")
         usage = client.usage()
         self.assertEqual(usage.plan, "starter")
-        self.assertEqual(usage.renders_used, 42)
-        self.assertEqual(usage.renders_remaining, 4958)
+        self.assertEqual(usage.renders.used, 42)
+        self.assertEqual(usage.renders.limit, 5000)
         server.shutdown()
 
 
