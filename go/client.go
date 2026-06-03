@@ -82,6 +82,8 @@ type RenderFileRequest struct {
 	// Content is the file contents.
 	Content  []byte
 	Options  RenderOptions
+	// Template applies a named template to Markdown uploads. Not valid for HTML files.
+	Template string
 }
 
 // SignedURLResult is returned by RenderSignedURL and RenderFileSignedURL.
@@ -288,6 +290,9 @@ func renderFileBody(req RenderFileRequest, output string) (*bytes.Buffer, string
 	}
 	if req.Options.Landscape {
 		w.WriteField("landscape", "true")
+	}
+	if req.Template != "" {
+		w.WriteField("template", req.Template)
 	}
 	w.WriteField("output", output)
 	w.Close()

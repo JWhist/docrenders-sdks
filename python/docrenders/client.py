@@ -57,6 +57,7 @@ class RenderFileRequest:
     filename: str
     content: bytes
     options: RenderOptions = field(default_factory=RenderOptions)
+    template: Optional[str] = None
 
 
 @dataclass
@@ -229,6 +230,8 @@ def _build_multipart(req: RenderFileRequest, output: str) -> Tuple[bytes, str]:
     lines.append(req.content)
 
     field("output", output)
+    if req.template:
+        field("template", req.template)
     opts = req.options
     if opts.format:
         field("format", opts.format)

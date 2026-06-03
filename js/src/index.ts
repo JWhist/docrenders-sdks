@@ -21,6 +21,7 @@ export interface RenderFileRequest {
   file: Blob | File;
   filename?: string;
   options?: RenderOptions;
+  template?: string;
 }
 
 export interface SignedURLResult {
@@ -132,6 +133,7 @@ function buildFormData(req: RenderFileRequest, output: string): FormData {
   if (req.options?.margin_bottom) fd.append("margin_bottom", req.options.margin_bottom);
   if (req.options?.margin_left) fd.append("margin_left", req.options.margin_left);
   if (req.options?.landscape) fd.append("landscape", "true");
+  if (req.template) fd.append("template", req.template);
   return fd;
 }
 
