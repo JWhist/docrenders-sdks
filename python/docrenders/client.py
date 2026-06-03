@@ -49,6 +49,7 @@ class RenderRequest:
     html: Optional[str] = None
     template: Optional[str] = None
     options: RenderOptions = field(default_factory=RenderOptions)
+    filename: Optional[str] = None
 
 
 @dataclass
@@ -122,6 +123,8 @@ class DocRendersClient:
             payload["html"] = req.html
         if req.template:
             payload["template"] = req.template
+        if req.filename:
+            payload["filename"] = req.filename
         opts = req.options.to_dict()
         if opts:
             payload["options"] = opts

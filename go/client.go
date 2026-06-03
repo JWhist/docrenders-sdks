@@ -72,6 +72,7 @@ type RenderRequest struct {
 	HTML     string        `json:"html,omitempty"`
 	Options  RenderOptions `json:"options,omitempty"`
 	Template string        `json:"template,omitempty"`
+	Filename string        `json:"filename,omitempty"`
 }
 
 // RenderFileRequest is the input for RenderFile and RenderFileSignedURL.
@@ -252,6 +253,9 @@ func renderBody(req RenderRequest, output string) map[string]interface{} {
 	}
 	if (req.Options != RenderOptions{}) {
 		body["options"] = req.Options
+	}
+	if req.Filename != "" {
+		body["filename"] = req.Filename
 	}
 	return body
 }
