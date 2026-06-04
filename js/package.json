@@ -1,5 +1,5 @@
 {
-  "name": "docrenders-sdk",
+  "name": "@docrenders/sdk",
   "version": "0.2.0",
   "description": "Official JavaScript/TypeScript SDK for the DocRenders API",
   "main": "dist/index.js",
