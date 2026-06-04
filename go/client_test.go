@@ -179,3 +179,44 @@ func TestAPIError(t *testing.T) {
 		t.Errorf("error message: got %q, want %q", err.Error(), want)
 	}
 }
+
+func TestRender_DataTemplate(t *testing.T) {
+	want := []byte("%PDF-1.4 fake pdf bytes")
+	_, client := newTestServer(t, func(w http.ResponseWriter, r *http.Request) {
+		var body map[string]interface{}
+		json.NewDecoder(r.Body).Decode(&body)
+		if body["template"] != "invoice" {
+			t.Errorf("expected template=invoice, got %v", body["template"])
+		}
+		data, ok := body["data"].(map[string]interface{})
+		if !ok {
+			t.Fatalf("expected data to be an object, got %T", body["data"])
+		}
+		if data["name"] != "Acme Corp" {
+			t.Errorf("expected data.name=Acme Corp, got %v", data["name"])
+		}
+		if body["markdown"] != nil {
+			t.Errorf("expected no markdown field in data-template request")
+		}
+		w.Header().Set("Content-Type", "application/pdf")
+		w.Write(want)
+	})
+
+	got, err := client.Render(context.Background(), pdfgen.RenderRequest{
+		Template: "invoice",
+		Data: map[string]any{
+			"name":  "Acme Corp",
+			"date":  "2026-06-03",
+			"total": 1500.0,
+			"items": []map[string]any{
+				{"description": "Design", "qty": 1, "unit_price": 1500.0, "amount": 1500.0},
+			},
+		},
+	})
+	if err != nil {
+		t.Fatalf("Render: %v", err)
+	}
+	if string(got) != string(want) {
+		t.Errorf("body mismatch: got %q, want %q", got, want)
+	}
+}

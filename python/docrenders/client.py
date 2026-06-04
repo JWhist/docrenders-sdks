@@ -48,6 +48,7 @@ class RenderRequest:
     markdown: Optional[str] = None
     html: Optional[str] = None
     template: Optional[str] = None
+    data: Optional[dict] = None
     options: RenderOptions = field(default_factory=RenderOptions)
 
 
@@ -112,6 +113,8 @@ class DocRendersClient:
             payload["html"] = req.html
         if req.template:
             payload["template"] = req.template
+        if req.data:
+            payload["data"] = req.data
         opts = req.options.to_dict()
         if opts:
             payload["options"] = opts
