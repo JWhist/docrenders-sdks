@@ -126,6 +126,33 @@ describe("DocRendersClient", () => {
     expect((caught as DocRendersError).message).toBe("monthly render limit reached");
   });
 
+  test("render() sends template and data fields for data-template mode", async () => {
+    let capturedBody: any;
+    (global as any).fetch = async (_url: string, init?: RequestInit) => {
+      capturedBody = JSON.parse(init?.body as string);
+      return new Response(PDF_BYTES, {
+        status: 200,
+        headers: { "Content-Type": "application/pdf" },
+      });
+    };
+
+    const client = new DocRendersClient("dcr_test_key");
+    await client.render({
+      template: "invoice",
+      data: {
+        name: "Acme Corp",
+        date: "2026-06-03",
+        total: 1500,
+        items: [{ description: "Design", qty: 1, unit_price: 1500, amount: 1500 }],
+      },
+    });
+
+    expect(capturedBody.template).toBe("invoice");
+    expect(capturedBody.data.name).toBe("Acme Corp");
+    expect(capturedBody.data.total).toBe(1500);
+    expect(capturedBody.markdown).toBeUndefined();
+  });
+
   test("sets Authorization header on every request", async () => {
     let capturedHeaders: Headers | undefined;
     (global as any).fetch = async (_url: string, init?: RequestInit) => {

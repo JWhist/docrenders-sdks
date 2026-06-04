@@ -122,6 +122,42 @@ class TestUsage(unittest.TestCase):
         server.shutdown()
 
 
+class TestRenderDataTemplate(unittest.TestCase):
+    def test_data_template_sends_correct_payload(self):
+        captured = {}
+
+        class Handler(BaseHTTPRequestHandler):
+            def do_POST(self):
+                length = int(self.headers.get("Content-Length", 0))
+                body = json.loads(self.rfile.read(length))
+                captured["body"] = body
+                resp = b"%PDF-1.4 fake"
+                self.send_response(200)
+                self.send_header("Content-Type", "application/pdf")
+                self.send_header("Content-Length", str(len(resp)))
+                self.end_headers()
+                self.wfile.write(resp)
+
+            def log_message(self, *args): pass
+
+        server = start_mock_server(Handler)
+        client = DocRendersClient("dcr_test_key", base_url=f"http://127.0.0.1:{server.server_address[1]}")
+        client.render(RenderRequest(
+            template="invoice",
+            data={
+                "name": "Acme Corp",
+                "date": "2026-06-03",
+                "total": 1500.0,
+                "items": [{"description": "Design", "qty": 1, "unit_price": 1500, "amount": 1500}],
+            },
+        ))
+        self.assertEqual(captured["body"]["template"], "invoice")
+        self.assertEqual(captured["body"]["data"]["name"], "Acme Corp")
+        self.assertEqual(captured["body"]["data"]["total"], 1500.0)
+        self.assertNotIn("markdown", captured["body"])
+        server.shutdown()
+
+
 class TestAPIError(unittest.TestCase):
     def test_api_error_raises(self):
         class Handler(BaseHTTPRequestHandler):

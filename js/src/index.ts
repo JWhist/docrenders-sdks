@@ -14,6 +14,7 @@ export interface RenderRequest {
   html?: string;
   options?: RenderOptions;
   template?: string;
+  data?: Record<string, unknown>;
 }
 
 export interface RenderFileRequest {
