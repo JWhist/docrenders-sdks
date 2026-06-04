@@ -4,16 +4,16 @@ Official client libraries for the DocRenders API — convert Markdown or HTML to
 
 | SDK | Directory | Package |
 |-----|-----------|---------|
-| Go | [`/go`](./go) | `github.com/JWhist/@docrenders/sdks/go` |
-| JavaScript / TypeScript | [`/js`](./js) | `@docrenders/sdk` (npm) |
-| Python | [`/python`](./python) | `@docrenders/sdk` (PyPI) |
+| Go | [`/go`](./go) | `github.com/JWhist/docrenders-sdks/go` |
+| JavaScript / TypeScript | [`/js`](./js) | `docrenders-sdk` (npm) |
+| Python | [`/python`](./python) | `docrenders-sdk` (PyPI) |
 
 ## Quick start
 
 ### Go
 
 ```go
-import docrenders "github.com/JWhist/@docrenders/sdks/go"
+import docrenders "github.com/JWhist/docrenders-sdks/go"
 
 client := docrenders.NewClient("dcr_live_YOUR_API_KEY")
 pdf, err := client.Render(ctx, docrenders.RenderRequest{
@@ -24,7 +24,7 @@ pdf, err := client.Render(ctx, docrenders.RenderRequest{
 ### JavaScript / TypeScript
 
 ```ts
-import DocRendersClient from "@docrenders/sdk";
+import DocRendersClient from "docrenders-sdk";
 
 const client = new DocRendersClient("dcr_live_YOUR_API_KEY");
 const pdf = await client.render({ markdown: "# Invoice\n\nDue: **$1,200**" });
